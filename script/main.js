@@ -23,11 +23,17 @@ window.addEventListener("DOMContentLoaded", function() {
       };
     }
 
+    function numFormat(n) {
+      return isNaN(n) ?
+                n :
+                n.toLocaleString(undefined, {minimumIntegerDigits: 2});
+    }
+
     function updateClock(timer) {
       timer = timer ? timer : getTimeRemaining();
-      timerHours.textContent = timer.hours;
-      timerMinutes.textContent = timer.minutes;
-      timerSeconds.textContent = timer.seconds;
+      timerHours.textContent = numFormat(timer.hours);
+      timerMinutes.textContent = numFormat(timer.minutes);
+      timerSeconds.textContent = numFormat(timer.seconds);
     }
 
     if (getTimeRemaining().timeRemaining > 0) {
