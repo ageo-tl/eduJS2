@@ -23,14 +23,19 @@ window.addEventListener("DOMContentLoaded", function() {
       };
     }
 
-    function updateClock() {
-      const timer = getTimeRemaining();
+    function updateClock(timer) {
+      timer = timer ? timer : getTimeRemaining();
       timerHours.textContent = timer.hours;
       timerMinutes.textContent = timer.minutes;
       timerSeconds.textContent = timer.seconds;
     }
 
-    setInterval(updateClock, 1000);
+    if (getTimeRemaining().timeRemaining > 0) {
+      updateClock();
+      setInterval(updateClock, 1000);
+    } else {
+      updateClock({hours: 0, minutes: 0, seconds: 0});
+    }
   }
 
   // countTimer("12 november 2019");
