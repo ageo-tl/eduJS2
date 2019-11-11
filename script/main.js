@@ -3,7 +3,6 @@ window.addEventListener("DOMContentLoaded", function() {
 
   // === Timer ===
   function countTimer(deadline) {
-    console.log('deadline: ', deadline);
     const timerHours = document.querySelector("#timer-hours"),
           timerMinutes = document.querySelector("#timer-minutes"),
           timerSeconds = document.querySelector("#timer-seconds");
@@ -45,7 +44,7 @@ window.addEventListener("DOMContentLoaded", function() {
   }
 
   // countTimer("12 november 2019");
-  let date = new Date();
+  const date = new Date();
   date.setDate(date.getDate() + 1);
   countTimer(date.toDateString());
   // === END OF === Timer ===
