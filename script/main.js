@@ -1,13 +1,13 @@
-window.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
   // === Timer ===
-  function countTimer(deadline) {
+  const countTimer = (deadline) => {
     const timerHours = document.querySelector("#timer-hours"),
           timerMinutes = document.querySelector("#timer-minutes"),
           timerSeconds = document.querySelector("#timer-seconds");
 
-    function getTimeRemaining() {
+    const getTimeRemaining = () => {
       const dateStop = new Date(deadline).getTime(),
             dateNow = new Date().getTime(),
             timeRemaining = (dateStop - dateNow) / 1000,
@@ -20,20 +20,20 @@ window.addEventListener("DOMContentLoaded", function() {
         minutes,
         seconds,
       };
-    }
+    };
 
-    function numFormat(n) {
+    const numFormat = (n) => {
       return isNaN(n) ?
                 n :
                 n.toLocaleString(undefined, {minimumIntegerDigits: 2});
-    }
+    };
 
-    function updateClock(timer) {
+    const updateClock = (timer) => {
       timer = timer ? timer : getTimeRemaining();
       timerHours.textContent = numFormat(timer.hours);
       timerMinutes.textContent = numFormat(timer.minutes);
       timerSeconds.textContent = numFormat(timer.seconds);
-    }
+    };
 
     if (getTimeRemaining().timeRemaining > 0) {
       updateClock();
