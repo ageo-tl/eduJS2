@@ -50,4 +50,49 @@ window.addEventListener("DOMContentLoaded", () => {
   // === END OF === Timer ===
 
 
+  // === Menu ===
+  const toggleMenu = () => {
+    const menu = document.querySelector("menu"),
+          btnMenu = document.querySelector(".menu"),
+          btnClose = document.querySelector(".close-btn"),
+          itemsMenu = menu.querySelectorAll("ul>li");
+
+    const handlerMenu = () => {
+      // if (!menu.style.transform) {
+      //   menu.style.transform = "translateX(0)";
+      // } else {
+      //   menu.style.transform = "";
+      // }
+      menu.classList.toggle("active-menu");
+    };
+
+    btnMenu.addEventListener("click", handlerMenu);
+    btnClose.addEventListener("click", handlerMenu);
+    itemsMenu.forEach( (item) => item.addEventListener("click", handlerMenu));
+
+  };
+  toggleMenu();
+  // === END OF === Menu ===
+
+
+  // === Popup ===
+  const togglePopup = () => {
+    const popup = document.querySelector("div.popup"),
+          btnsPopup = document.querySelectorAll(".popup-btn"),
+          closePopup = document.querySelector(".popup-close");
+
+    btnsPopup.forEach( (btn) => {
+      btn.addEventListener("click", () => {
+        popup.style.display = "block";
+      });
+    });
+
+    closePopup.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+  };
+  togglePopup();
+  // === END OF === Popup ===
+
+
 });
