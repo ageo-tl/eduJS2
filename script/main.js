@@ -81,9 +81,46 @@ window.addEventListener("DOMContentLoaded", () => {
           btnsPopup = document.querySelectorAll(".popup-btn"),
           closePopup = document.querySelector(".popup-close");
 
+    // Анимация появления popup'а
+    const popupAnimated = (timeout=500) => {
+      const timeGap = 10;       // временной шаг анимации
+      const start = Date.now(); // время начала анимации
+
+      const timer = setInterval( () => {
+        // оставшееся время до конца анимации
+        const timeLeft = timeout - (Date.now() - start);
+        if (timeLeft < 0) {
+          // закончить анимацию после истечения таймаута
+          clearInterval(timer);
+          return;
+        }
+        // отрисовать анимацию с учетом оставшегося времени
+        draw(timeLeft);
+      }, timeGap);
+
+      // смещение popup'а с учетом оставшегося на анимацию времени и временного шага
+      const draw = (timeLeft) => {
+        const left = parseInt(popup.style.left);
+        const shift = left / timeLeft * timeGap;
+        if (Math.abs(left) - Math.abs(shift) <= 0) {
+          popup.style.left = "0%";
+        } else {
+          popup.style.left = (left - shift) + '%';
+        }
+      };
+
+    };
+
     btnsPopup.forEach( (btn) => {
       btn.addEventListener("click", () => {
-        popup.style.display = "block";
+        if (window.screen.width >= 768) {
+          popup.querySelector(".popup-content").style.position = "absolute";
+          popup.style.left = "-100%";
+          popup.style.display = "block";
+          popupAnimated(200);
+        } else {
+          popup.style.display = "block";
+        }
       });
     });
 
