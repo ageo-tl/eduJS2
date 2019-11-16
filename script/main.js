@@ -89,11 +89,6 @@ window.addEventListener("DOMContentLoaded", () => {
       const timer = setInterval( () => {
         // оставшееся время до конца анимации
         const timeLeft = timeout - (Date.now() - start);
-        if (timeLeft < 0) {
-          // закончить анимацию после истечения таймаута
-          clearInterval(timer);
-          return;
-        }
         // отрисовать анимацию с учетом оставшегося времени
         draw(timeLeft);
       }, timeGap);
@@ -103,7 +98,11 @@ window.addEventListener("DOMContentLoaded", () => {
         const left = parseInt(popup.style.left);
         const shift = left / timeLeft * timeGap;
         if (Math.abs(left) - Math.abs(shift) <= 0) {
+          // Завершение анимации:
+          // // "парковка" элемента на место
+          // // очистка setInterval
           popup.style.left = "0%";
+          clearInterval(timer);
         } else {
           popup.style.left = (left - shift) + '%';
         }
