@@ -124,8 +124,8 @@ window.addEventListener("DOMContentLoaded", () => {
       const anchor = item.hash.slice(1);
       item.addEventListener("click", (event) => {
         event.preventDefault();
-        document.documentElement.scrollTop =
-            document.getElementById(anchor).offsetTop;
+        // document.documentElement.scrollTop =
+        //     document.getElementById(anchor).offsetTop;
         scrollPage({
               timing: quad,
               draw: draw,
