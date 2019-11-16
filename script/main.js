@@ -74,6 +74,70 @@ window.addEventListener("DOMContentLoaded", () => {
   toggleMenu();
   // === END OF === Menu ===
 
+  // === SCROLL ===
+  const scrollToElement = () => {
+
+    // Расчет прогресса от времени
+    const quad = (timeFraction) => {
+      return Math.pow(timeFraction, 2);
+    };
+
+    // Прокрутка страницы
+    const draw = (current, target, progress) => {
+      document.documentElement.scrollTop =
+          current + (target - current) * progress;
+    };
+
+    // Анимация прокрутки страницы
+    const scrollPage = ({
+      timing, draw, duration, currentScroll, targetScroll
+    }) => {
+      const curDraw = draw.bind(null, currentScroll, targetScroll);
+      const start = performance.now();
+
+      const animate = (time) => {
+        // timeFraction изменяется от 0 до 1
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) { timeFraction = 1; }
+
+        // вычисление текущего состояния анимации и ее отрисовка
+        const progress = timing(timeFraction);
+        curDraw(progress);
+
+        // рекурсия по условию
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    };
+
+    const itemsMenu = document.querySelectorAll("menu>ul>li");
+    const btnNext = document.querySelector("main>a[href='#service-block']");
+    const allItems = [
+      ...[...itemsMenu].map((item) => item.querySelector("a[href*='#']")),
+      btnNext,
+      ];
+
+    allItems.forEach( (item) => {
+      const anchor = item.hash.slice(1);
+      item.addEventListener("click", (event) => {
+        event.preventDefault();
+        document.documentElement.scrollTop =
+            document.getElementById(anchor).offsetTop;
+        scrollPage({
+              timing: quad,
+              draw: draw,
+              duration: 500,
+              currentScroll: document.documentElement.scrollTop,
+              targetScroll: document.getElementById(anchor).offsetTop
+            });
+      });
+    });
+  };
+  scrollToElement();
+  // === END OF === SCROLL ===
 
   // === Popup ===
   const togglePopup = () => {
