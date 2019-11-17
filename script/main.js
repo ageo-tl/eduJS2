@@ -359,4 +359,30 @@ window.addEventListener("DOMContentLoaded", () => {
   switchPhoto();
   // === END OF === Command Photo ===
 
+
+  // === Calc ===
+  const calcCheckInput = () => {
+    const calc = document.querySelector(".calc-block"),
+          calcItems = calc.querySelectorAll(".calc-item");
+
+    // Поменяем тип input'а на text, чтобы при удалении символов-нецифр
+    // не удалялся остальной ввод
+    calcItems.forEach( (item) => {
+      if (item.matches(".calc-square, .calc-count, .calc-day")) {
+        item.setAttribute("type", "text");
+      }
+    });
+
+    calc.addEventListener("input", (event) => {
+      const { target } = event;
+      if (target.matches(".calc-square, .calc-count, .calc-day")) {
+        // Удаляем нецифровые символы, если есть
+        target.value = target.value.replace(/\D/g, "");
+      }
+    });
+  };
+  calcCheckInput();
+  // === END OF === Calc ===
+
+
 });
