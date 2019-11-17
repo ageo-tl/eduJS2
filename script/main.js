@@ -52,8 +52,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // === Menu ===
   const toggleMenu = () => {
-    const menu = document.querySelector("menu"),
-          btnMenu = document.querySelector(".menu");
+    const menu = document.querySelector("menu");
 
     const handlerMenu = (event) => {
       const { target } = event;
@@ -62,8 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    btnMenu.addEventListener("click", handlerMenu);
-    menu.addEventListener("click", handlerMenu);
+    document.addEventListener("click", handlerMenu);
 
   };
   toggleMenu();
