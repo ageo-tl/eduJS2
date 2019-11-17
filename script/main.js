@@ -53,22 +53,17 @@ window.addEventListener("DOMContentLoaded", () => {
   // === Menu ===
   const toggleMenu = () => {
     const menu = document.querySelector("menu"),
-          btnMenu = document.querySelector(".menu"),
-          btnClose = document.querySelector(".close-btn"),
-          itemsMenu = menu.querySelectorAll("ul>li");
+          btnMenu = document.querySelector(".menu");
 
-    const handlerMenu = () => {
-      // if (!menu.style.transform) {
-      //   menu.style.transform = "translateX(0)";
-      // } else {
-      //   menu.style.transform = "";
-      // }
-      menu.classList.toggle("active-menu");
+    const handlerMenu = (event) => {
+      const { target } = event;
+      if (target.closest(".menu, .close-btn, menu>ul>li")) {
+        menu.classList.toggle("active-menu");
+      }
     };
 
     btnMenu.addEventListener("click", handlerMenu);
-    btnClose.addEventListener("click", handlerMenu);
-    itemsMenu.forEach( (item) => item.addEventListener("click", handlerMenu));
+    menu.addEventListener("click", handlerMenu);
 
   };
   toggleMenu();
