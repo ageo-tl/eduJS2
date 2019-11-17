@@ -115,17 +115,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const itemsMenu = document.querySelectorAll("menu>ul>li");
     const btnNext = document.querySelector("main>a[href='#service-block']");
-    const allItems = [
-      ...[...itemsMenu].map((item) => item.querySelector("a[href*='#']")),
-      btnNext,
-      ];
+    const allItems = [...itemsMenu, btnNext];
 
     allItems.forEach( (item) => {
-      const anchor = item.hash.slice(1);
+      let it;
+      if ("hash" in item) {
+        it = item;
+      } else {
+        it = item.querySelector("a[href*='#']");
+      }
+      const anchor = it.hash.slice(1);
       item.addEventListener("click", (event) => {
         event.preventDefault();
-        // document.documentElement.scrollTop =
-        //     document.getElementById(anchor).offsetTop;
         scrollPage({
               timing: quad,
               draw: draw,
