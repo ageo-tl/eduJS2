@@ -232,11 +232,23 @@ window.addEventListener("DOMContentLoaded", () => {
   // === Slider ===
   const playSlider =() => {
     const slider =document.querySelector(".portfolio-content"),
-          slides = document.querySelectorAll(".portfolio-item"),
-          dots = document.querySelectorAll(".dot");
+          slides = document.querySelectorAll(".portfolio-item");
 
     let currentSlide = 0,     // Счетчик слайда
-        idInterval;           // id для setInterval
+        idInterval,           // id для setInterval
+        dots;                 //список элементов-"точек"
+
+    // Добавление "точек" на слайдер
+    const addDots = () => {
+      const dotPlace = document.querySelector(".portfolio-dots");
+      const newDot = document.createElement("li");
+      newDot.classList.add("dot");
+      for (let i = 0; i < slides.length; i++) {
+        const dot = dotPlace.appendChild(newDot.cloneNode());
+        if (!i) { dot.classList.add("dot-active"); }
+      }
+      dots = document.querySelectorAll(".dot");
+    };
 
     const prevSlide = (elems, index, strClass) => {
       // Действия для скрытия (элементов) слайда
@@ -313,6 +325,8 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Добавим "точки" на слайдер
+    addDots();
     // Поехали!
     startSlider();
 
