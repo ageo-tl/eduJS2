@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>ToDo List</title>
+  <style>
+    body {
+      background-color: #555555;
+      height: 100vh;
+      background-image: url("https://www.rmg.co.uk/sites/default/files/S414860226834_Grand%20Finale%20%C2%A9%20Gordon%20Mackie_0.jpg");
+      background-position: 50% 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    ol>li {
+      background-color: rgba(100, 100, 100, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <main class="text-light">
+    <div class="container">
+      <div class="row text-center">
+        <h2 class="mx-auto">Мой список задач</h2>
+      </div>
+      <div class="row">
+        <ol class="mx-auto">
+          <li class="border border-warning rounded p-2 m-2">Задача 1</li>
+          <li class="border border-warning rounded p-2 m-2">Задача 2</li>
+        </ol>
+      </div>
+      <div class="row">
+        <input type="text" class="form-control w-50 p-3 mx-auto" placeholder="новая задача">
+      </div>
+      <div class="row">
+        <button class="btn btn-primary mx-auto m-2">Добавить</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
