@@ -382,6 +382,49 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
   calcCheckInput();
+
+  const calc = (price=100) => {
+    const calcBlock = document.querySelector(".calc-block"),
+          calcType = document.querySelector(".calc-type"),
+          calcSquare = document.querySelector(".calc-square"),
+          calcCount = document.querySelector(".calc-count"),
+          calcDay = document.querySelector(".calc-day"),
+          totalValue = document.getElementById("total");
+
+    const countSum = () => {
+      let total = 0,
+          countValue = 1,
+          dayValue = 1;
+
+      // Тип помещения и площадь
+      const typeValue = calcType.options[calcType.options.selectedIndex].value,
+            squareValue = +calcSquare.value;
+
+      // Количество помещений и сроки
+      if (calcCount.value > 1) {
+        countValue += (calcCount.value - 1) / 10 ;
+      }
+      if (calcDay.value && calcDay.value < 5) {
+        dayValue *= 2;
+      } else if (calcDay.value && calcDay.value < 10) {
+        dayValue *= 1.5;
+      }
+
+      // Итого
+      if (typeValue && squareValue) {
+        total = price * typeValue * squareValue * countValue * dayValue;
+      }
+      totalValue.textContent = total;
+    };
+
+    calcBlock.addEventListener("change", (event) => {
+      const { target } = event;
+      if (target.matches(".calc-item")) {
+        countSum();
+      }
+    });
+  };
+  calc();
   // === END OF === Calc ===
 
 
