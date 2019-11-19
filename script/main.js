@@ -394,6 +394,11 @@ window.addEventListener("DOMContentLoaded", () => {
           calcDay = document.querySelector(".calc-day"),
           totalValue = document.getElementById("total");
 
+    const sumAnimated = (current, target, progress) => {
+        totalValue.textContent =
+              Math.floor(+current + (target - current) * progress);
+    };
+
     const countSum = () => {
       let total = 0,
           countValue = 1,
@@ -417,7 +422,9 @@ window.addEventListener("DOMContentLoaded", () => {
       if (typeValue && squareValue) {
         total = price * typeValue * squareValue * countValue * dayValue;
       }
-      totalValue.textContent = total;
+      const animateTotal =
+                  sumAnimated.bind(null, totalValue.textContent, total);
+      generalAnimation({timing: quad, draw: animateTotal, duration: 300});
     };
 
     calcBlock.addEventListener("change", (event) => {
