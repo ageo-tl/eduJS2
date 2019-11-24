@@ -438,4 +438,56 @@ window.addEventListener("DOMContentLoaded", () => {
   // === END OF === Calc ===
 
 
+  // === Send-ajax-form ===
+  const sendForm = () => {
+    const errorMessage = "Что-то пошло не так...",
+          loadMessage = "Загрузка...",
+          succesMessage = "Спасибо! Мы скоро с Вами свяжемся!",
+          statusMessage = document.createElement("div");
+    statusMessage.style.cssText = "font-size: 2rem;";
+
+    const form1 = document.getElementById("form1");
+
+    form1.addEventListener("submit", (event) => {
+      event.preventDefault();
+      // Элемент для сообщения
+      form1.appendChild(statusMessage);
+
+      // Данные из формы
+      const formData = new FormData(form1);
+      const body = {};
+      // for (const val of formData.entries()) {
+      //   body[val[0]] = val[1];
+      // }
+      formData.forEach( (val, key) => {
+        body[key] = val;
+      });
+
+      // Отправка данных с помощью XMLHttpRequest
+      const request = new XMLHttpRequest();
+      request.addEventListener("readystatechange", () => {
+        statusMessage.textContent = loadMessage;
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          statusMessage.textContent = succesMessage;
+        } else {
+          statusMessage.textContent = errorMessage;
+          console.error("Ошибка при отправке данных:",
+                        request.status,
+                        request.statusText);
+        }
+      });
+      request.open("POST", "./server.php");
+      // request.setRequestHeader("Content-Type", "multipart/form-data");
+      // request.send(formData);
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(JSON.stringify(body));
+    });
+  };
+  sendForm();
+  // === END OF === Send-ajax-form ===
+
+
 });
