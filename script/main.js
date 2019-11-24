@@ -446,7 +446,7 @@ window.addEventListener("DOMContentLoaded", () => {
           statusMessage = document.createElement("div");
     statusMessage.style.cssText = "font-size: 2rem;";
 
-    const form1 = document.getElementById("form1");
+    const forms = document.querySelectorAll("form[id^=\"form\"]");
 
     const postData = (body, outputData, errorData) => {
       // Отправка данных с помощью XMLHttpRequest
@@ -467,26 +467,28 @@ window.addEventListener("DOMContentLoaded", () => {
       request.send(JSON.stringify(body));
     };
 
-    // Листенер для формы
-    form1.addEventListener("submit", (event) => {
-      event.preventDefault();
-      // Элемент для сообщения
-      form1.appendChild(statusMessage);
+    // Листенер для форм
+    forms.forEach( (form) => {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        // Элемент для сообщения
+        form.appendChild(statusMessage);
 
-      // Данные из формы
-      const formData = new FormData(form1);
-      const body = {};
-      formData.forEach( (val, key) => {
-        body[key] = val;
-      });
+        // Данные из формы
+        const formData = new FormData(form);
+        const body = {};
+        formData.forEach( (val, key) => {
+          body[key] = val;
+        });
 
-      postData(body, () => {
-        statusMessage.textContent = succesMessage;
-      }, (error, errorText) => {
-        statusMessage.textContent = errorMessage;
-        console.error("Ошибка при отправке данных:",
-                      error,
-                      errorText);
+        postData(body, () => {
+          statusMessage.textContent = succesMessage;
+        }, (error, errorText) => {
+          statusMessage.textContent = errorMessage;
+          console.error("Ошибка при отправке данных:",
+                        error,
+                        errorText);
+        });
       });
     });
   };
