@@ -438,6 +438,24 @@ window.addEventListener("DOMContentLoaded", () => {
   // === END OF === Calc ===
 
 
+  // === Validation ===
+  // Валидация телефона
+  const phoneValid = ({ target: phone }) => {
+    if (phone.value.trim().match(/^\+?\d+$/)) {
+      phone.style.border = "2px solid green";
+      return true;
+    } else {
+      phone.style.border = "2px solid red";
+      return false;
+    }
+  };
+  const phones = document.querySelectorAll("input[id$=phone]");
+  phones.forEach( (phone) => {
+    phone.addEventListener("change", phoneValid);
+  });
+  // === END OF === Validation ===
+
+
   // === Send-ajax-form ===
   const sendForm = () => {
     const errorMessage = "Что-то пошло не так...",
@@ -471,6 +489,15 @@ window.addEventListener("DOMContentLoaded", () => {
     forms.forEach( (form) => {
       form.addEventListener("submit", (event) => {
         event.preventDefault();
+
+        // Проверка поля телефона
+        const phone = [...form.elements].filter(
+          (elem) => elem.matches("input[id$=phone]"))[0];
+        if (!phoneValid({target: phone})) {
+          // Прерываем действие, если номер не валиден
+          return;
+        }
+
         // Элемент для сообщения
         form.appendChild(statusMessage);
 
@@ -483,7 +510,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
         postData(body, () => {
           statusMessage.textContent = succesMessage;
-          const inputes = [...form.elements].filter( (elem) => !elem.matches("button, input[type=\"button\"]"));
+          const inputes = [...form.elements].filter(
+            (elem) => !elem.matches("button, input[type=\"button\"]"));
           inputes.forEach( (elem) => {elem.value = "";});
         }, (error, errorText) => {
           statusMessage.textContent = errorMessage;
