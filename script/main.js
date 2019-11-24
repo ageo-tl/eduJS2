@@ -483,6 +483,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
         postData(body, () => {
           statusMessage.textContent = succesMessage;
+          const inputes = [...form.elements].filter( (elem) => !elem.matches("button, input[type=\"button\"]"));
+          inputes.forEach( (elem) => {elem.value = "";});
         }, (error, errorText) => {
           statusMessage.textContent = errorMessage;
           console.error("Ошибка при отправке данных:",
