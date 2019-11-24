@@ -446,7 +446,7 @@
         const validatorForm2 = new Validator({
             selector: "#form2",
             pattern: {
-                "cyrillic": /^[А-Яа-яЁё,\. ]*$/
+                "cyrillic": /^[А-Яа-яЁё,\. ]+$/
             },
             method: {
                 "form2-phone": [
@@ -462,6 +462,7 @@
                     ["pattern", "cyrillic"],
                 ],
                 "form2-message": [
+                    ["notEmpty"],
                     ["pattern", "cyrillic"],
                 ],
             },
