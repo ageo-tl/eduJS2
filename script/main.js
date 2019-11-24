@@ -448,21 +448,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const form1 = document.getElementById("form1");
 
-    form1.addEventListener("submit", (event) => {
-      event.preventDefault();
-      // Элемент для сообщения
-      form1.appendChild(statusMessage);
-
-      // Данные из формы
-      const formData = new FormData(form1);
-      const body = {};
-      // for (const val of formData.entries()) {
-      //   body[val[0]] = val[1];
-      // }
-      formData.forEach( (val, key) => {
-        body[key] = val;
-      });
-
+    const postData = (body, outputData, errorData) => {
       // Отправка данных с помощью XMLHttpRequest
       const request = new XMLHttpRequest();
       request.addEventListener("readystatechange", () => {
@@ -471,19 +457,37 @@ window.addEventListener("DOMContentLoaded", () => {
           return;
         }
         if (request.status === 200) {
-          statusMessage.textContent = succesMessage;
+          outputData();
         } else {
-          statusMessage.textContent = errorMessage;
-          console.error("Ошибка при отправке данных:",
-                        request.status,
-                        request.statusText);
+          errorData(request.status, request.statusText);
         }
       });
       request.open("POST", "./server.php");
-      // request.setRequestHeader("Content-Type", "multipart/form-data");
-      // request.send(formData);
       request.setRequestHeader("Content-Type", "application/json");
       request.send(JSON.stringify(body));
+    };
+
+    // Листенер для формы
+    form1.addEventListener("submit", (event) => {
+      event.preventDefault();
+      // Элемент для сообщения
+      form1.appendChild(statusMessage);
+
+      // Данные из формы
+      const formData = new FormData(form1);
+      const body = {};
+      formData.forEach( (val, key) => {
+        body[key] = val;
+      });
+
+      postData(body, () => {
+        statusMessage.textContent = succesMessage;
+      }, (error, errorText) => {
+        statusMessage.textContent = errorMessage;
+        console.error("Ошибка при отправке данных:",
+                      error,
+                      errorText);
+      });
     });
   };
   sendForm();
