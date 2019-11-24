@@ -438,4 +438,105 @@ window.addEventListener("DOMContentLoaded", () => {
   // === END OF === Calc ===
 
 
+  // === Validation ===
+  // Валидация телефона
+  const phoneValid = ({ target: phone }) => {
+    if (phone.value.trim().match(/^\+?\d+$/)) {
+      phone.style.border = "2px solid green";
+      return true;
+    } else {
+      phone.style.border = "2px solid red";
+      return false;
+    }
+  };
+  const phones = document.querySelectorAll("input[id$='phone']");
+  phones.forEach( (phone) => {
+    phone.addEventListener("change", phoneValid);
+  });
+  // === END OF === Validation ===
+
+
+  // === Input filtering ===
+  const cyrillicFilter = ({target: field}) => {
+    if (field.value.match(/[^А-Яа-яЁе ]/)) {
+      field.value = field.value.replace(/[^А-Яа-яЁе ]/, "");
+    }
+  };
+  const cyrFields = document.querySelectorAll("input[id$='name'],[id$='message']");
+  cyrFields.forEach( (field) => {
+    field.addEventListener("input", cyrillicFilter);
+  });
+  // === END OF === Input filtering ===
+
+
+  // === Send-ajax-form ===
+  const sendForm = () => {
+    const errorMessage = "Что-то пошло не так...",
+          loadMessage = "Загрузка...",
+          succesMessage = "Спасибо! Мы скоро с Вами свяжемся!",
+          statusMessage = document.createElement("div");
+    statusMessage.style.cssText = "font-size: 2rem;";
+
+    const forms = document.querySelectorAll("form[id^=\"form\"]");
+
+    const postData = (body, outputData, errorData) => {
+      // Отправка данных с помощью XMLHttpRequest
+      const request = new XMLHttpRequest();
+      request.addEventListener("readystatechange", () => {
+        statusMessage.textContent = loadMessage;
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          outputData();
+        } else {
+          errorData(request.status, request.statusText);
+        }
+      });
+      request.open("POST", "./server.php");
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(JSON.stringify(body));
+    };
+
+    // Листенер для форм
+    forms.forEach( (form) => {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        // Проверка поля телефона
+        const phone = [...form.elements].filter(
+          (elem) => elem.matches("input[id$=phone]"))[0];
+        if (!phoneValid({target: phone})) {
+          // Прерываем действие, если номер не валиден
+          return;
+        }
+
+        // Элемент для сообщения
+        form.appendChild(statusMessage);
+
+        // Данные из формы
+        const formData = new FormData(form);
+        const body = {};
+        formData.forEach( (val, key) => {
+          body[key] = val;
+        });
+
+        postData(body, () => {
+          statusMessage.textContent = succesMessage;
+          const inputes = [...form.elements].filter(
+            (elem) => !elem.matches("button, input[type=\"button\"]"));
+          inputes.forEach( (elem) => {elem.value = "";});
+        }, (error, errorText) => {
+          statusMessage.textContent = errorMessage;
+          console.error("Ошибка при отправке данных:",
+                        error,
+                        errorText);
+        });
+      });
+    });
+  };
+  sendForm();
+  // === END OF === Send-ajax-form ===
+
+
 });
