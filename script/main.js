@@ -449,11 +449,24 @@ window.addEventListener("DOMContentLoaded", () => {
       return false;
     }
   };
-  const phones = document.querySelectorAll("input[id$=phone]");
+  const phones = document.querySelectorAll("input[id$='phone']");
   phones.forEach( (phone) => {
     phone.addEventListener("change", phoneValid);
   });
   // === END OF === Validation ===
+
+
+  // === Input filtering ===
+  const cyrillicFilter = ({target: field}) => {
+    if (field.value.match(/[^А-Яа-яЁе ]/)) {
+      field.value = field.value.replace(/[^А-Яа-яЁе ]/, "");
+    }
+  };
+  const cyrFields = document.querySelectorAll("input[id$='name'],[id$='message']");
+  cyrFields.forEach( (field) => {
+    field.addEventListener("input", cyrillicFilter);
+  });
+  // === END OF === Input filtering ===
 
 
   // === Send-ajax-form ===
