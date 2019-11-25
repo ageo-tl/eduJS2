@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bonus - RandomColor</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    .wrapper {
+      background-color: grey;
+      height: 100vh;
+      font-family: sans-serif;
+    }
+    h1 {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 20%;
+      left: 50%;
+      color: #fff;
+    }
+    button{
+      width: 150px;
+      height: 50px;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 35%;
+      left: 50%;
+      border: none;
+      color: grey;
+      background-color: #fff;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <h1 id="color">grey color</h1>
+    <button id="change" type="button">New Color</button>
+  </div>
+
+  <script>
+    const wrap = document.querySelector(".wrapper"),
+          colorHeader = document.getElementById("color"),
+          btnChangeColor = document.getElementById("change"),
+          colorRange = 2**24;
+
+    const randomColor = () => {
+      const newColor = "#" + Math.floor(Math.random() * colorRange).toString(16);
+      wrap.style.backgroundColor = newColor;
+      colorHeader.textContent = newColor;
+      btnChangeColor.style.color = newColor;
+    };
+
+    randomColor();
+    btnChangeColor.addEventListener("click", randomColor);
+  </script>
+</body>
+</html>
