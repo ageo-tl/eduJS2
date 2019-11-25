@@ -480,23 +480,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const forms = document.querySelectorAll("form[id^=\"form\"]");
 
     const postData = (body) => {
-      // Отправка данных с помощью XMLHttpRequest
-      return new Promise( (resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener("readystatechange", () => {
-          statusMessage.textContent = loadMessage;
-          if (request.readyState !== 4) {
-            return;
-          }
-          if (request.status === 200) {
-            resolve();
-          } else {
-            reject(request.status, request.statusText);
-          }
-        });
-        request.open("POST", "./server.php");
-        request.setRequestHeader("Content-Type", "application/json");
-        request.send(JSON.stringify(body));
+      // Отправка данных с помощью fetch
+      return fetch("./server.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body),
       });
     };
 
@@ -524,17 +514,20 @@ window.addEventListener("DOMContentLoaded", () => {
         });
 
         postData(body)
-          .then( () => {
-          statusMessage.textContent = succesMessage;
-          const inputes = [...form.elements].filter(
-            (elem) => !elem.matches("button, input[type=\"button\"]"));
-          inputes.forEach( (elem) => {elem.value = "";});
+          .then( (response) => {
+            if (response.status !== 200) {
+              throw new Error("network status is " +
+                response.status + " - " + response.statusText);
+            }
+            statusMessage.textContent = succesMessage;
+            // Очистка формы при успешном ответе сервера
+            const inputes = [...form.elements].filter(
+              (elem) => !elem.matches("button, input[type=\"button\"]"));
+            inputes.forEach( (elem) => {elem.value = "";});
           })
-          .catch( (error, errorText) => {
-          statusMessage.textContent = errorMessage;
-          console.error("Ошибка при отправке данных:",
-                        error,
-                        errorText);
+          .catch( (error) => {
+            statusMessage.textContent = errorMessage;
+            console.error("Ошибка при отправке данных:", error);
           });
       });
     });
