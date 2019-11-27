@@ -1,11 +1,11 @@
-import phoneValid from './phoneValid';
+import { phoneValid, notEmptyValid } from './validators';
 
 const sendForm = () => {
   const errorMessage = "Что-то пошло не так...",
         loadMessage = "Загрузка...",
         succesMessage = "Спасибо! Мы скоро с Вами свяжемся!",
         statusMessage = document.createElement("div");
-  statusMessage.style.cssText = "font-size: 2rem;";
+  statusMessage.style.cssText = "font-size: 2rem; color: #fff;";
 
   const forms = document.querySelectorAll("form[id^=\"form\"]");
 
@@ -32,6 +32,21 @@ const sendForm = () => {
         // Прерываем действие, если номер не валиден
         return;
       }
+      // Проверка поля email
+      const email = [...form.elements].filter(
+        (elem) => elem.matches("input[id$=email]"))[0];
+      if (!notEmptyValid({target: email})) {
+        // Прерываем действие, если поле пусто
+        return;
+      }
+      // Проверка поля сообщение (если есть)
+      const msg = [...form.elements].filter(
+        (elem) => elem.matches("input[id$=message]"))[0];
+      if (msg && !notEmptyValid({target: msg})) {
+        // Прерываем действие, если поле пусто
+        return;
+      }
+
 
       // Элемент для сообщения
       form.appendChild(statusMessage);
